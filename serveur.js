@@ -78,8 +78,14 @@ app.post('/api/verif/users', (req, res) => {
           case 'adherent':
             currentUser = new User(dataUser)
             console.log('Adhérent connecté est à l\'id : ' + currentUser.getId())
-            // Réponse du serveur
-            res.send(dataVerif)
+            // Récupération de l'id de d'adhérent lié à sa ses fiches de frais
+            currentUser.selectDataAdherent(currentUser.getId(), userData => {
+              // Initialisation des données de l'adhérent
+              dataVerif.adherentIdFicheFrais = userData.fiche[0].id_demandeur
+              console.log(dataVerif.adherentIdFicheFrais)
+              // Réponse du serveur
+              res.send(dataVerif)
+            })
             break
           case 'tresorier':
             // currentUser = new Admin(dataUser)
@@ -123,7 +129,6 @@ app.get('/api/select/ligues', (req, res) => {
 
 // SELECTION DES MOTIFS
 app.get('/api/select/motifs', (req, res) => {
-  console.log('Sélection des motifs')
   // Traitement des informations
   traitement.selectMotifs(resultat => {
     // Réponse du serveur
@@ -178,7 +183,7 @@ app.post('/api/create/user', (req, res) => {
 
 // MISE A JOUR D'UN UTILISATEUR
 app.post('/api/update/user', (req, res) => {
-  console.log('Requête de création d\'utilisateur')
+  console.log('Mise à jour d\'utilisateur')
   // Enregistrement de l'utilisateur
   currentUser.updateUser(req.body.id, req.body.email, req.body.statut, req.body.droitReservation, req.body.niveauTarif, (statut) => {
     // Vérification et retour du résultat
@@ -262,6 +267,14 @@ app.get('/api/select/data-adherent/:id', (req, res)=>{
   })
 })
 
+// LISTE DES ADHERENTS
+app.get('/api/select/adherents', (req, res)=>{
+  // Récupération des informations
+  currentUser.selectAllAdherentBordereau(userData => {
+    res.send(userData)
+  })
+})
+
 /**
  * GESTION DES FICHES DE FRAIS
  * CRUD Fiche de frais
@@ -293,8 +306,8 @@ app.get('/api/select/fiche-de-frais/:idAdherent/:id', (req, res)=>{
   const id_adherent = parseInt(req.params.idAdherent)
   const id_fiche_frais = parseInt(req.params.id)
   // Traitement de la requête
-  currentUser.selectFicheFrais(id_fiche_frais, id_adherent)
-  res.send(ficheData)
+  // currentUser.selectFicheFrais(id_fiche_frais, id_adherent)
+  // res.send(ficheData)
   currentUser.selectFicheFrais(id_fiche_frais, id_adherent, ficheData => {
     res.send(ficheData)
   })
@@ -302,7 +315,6 @@ app.get('/api/select/fiche-de-frais/:idAdherent/:id', (req, res)=>{
 
 // CREATION D'UNE FICHE DE FRAIS
 app.post('/api/create/fiche-de-frais', (req, res) => {
-  console.log('Requête de création d\'une fiche de frais')
   // Conversion de la date
   const date_fiche_frais = new Date(req.body.dateLigneFrais).toISOString().slice(0, 19).replace('T', ' ')
   // Enregistrement d'une fiche de frais
@@ -327,7 +339,7 @@ app.post('/api/update/fiche-de-frais', (req, res) => {
   // Conversion de la date
   const date_fiche_frais = new Date(req.body.dateLigneFrais).toISOString().slice(0, 19).replace('T', ' ')
   // Mise à jour req.body
-  currentUser.updateFicheFrais(date_fiche_frais, req.body.trajet, req.body.km, req.body.kmValide, req.body.coutPeage, req.body.peageValide, req.bodyPeageJustificatif, req.body.coutRepas, req.body.repasValide, req.body.coutHebergement, req.body.hebergementValide, req.body.hebergementJustificatif, req.body.idMotif, req.body.idAdherent, (statut) => {
+  currentUser.updateFicheFrais(req.body.id, date_fiche_frais, req.body.trajet, req.body.km, req.body.kmValide, req.body.coutPeage, req.body.peageValide, req.bodyPeageJustificatif, req.body.coutRepas, req.body.repasValide, req.body.coutHebergement, req.body.hebergementValide, req.body.hebergementJustificatif, req.body.idMotif, (statut) => {
     // Vérification et retour du résultat
     if (statut == 'update')
     {
@@ -342,13 +354,12 @@ app.post('/api/update/fiche-de-frais', (req, res) => {
 })
 
 // SUPRESSION D'UNE FICHE DE FRAIS
-app.get('/api/delete/fiche-de-frais/:idAdherent/:id', (req, res)=>{
+app.get('/api/delete/fiche-de-frais/:id', (req, res)=>{
   console.log('Requête de suppression de données')
   // Récupération des informations
-  const id_adherent = parseInt(req.params.idAdherent)
   const id_fiche_frais = parseInt(req.params.id)
   // Traitement de la requête
-  currentUser.deleteFicheFrais(id_adherent, id_fiche_frais, ficheData => {
+  currentUser.deleteFicheFrais(id_fiche_frais, ficheData => {
     console.log('Données supprimées')
     res.send(ficheData)
   })
@@ -361,7 +372,6 @@ app.get('/api/delete/fiche-de-frais/:idAdherent/:id', (req, res)=>{
 
 // LISTE DES BORDEREAUX d'UNE ANNEE
 app.get('/api/select/all-bordereau/:idDate', (req, res)=>{
-  console.log(req.params.idDate)
   // Récupération des informations
   currentUser.selectAllBordereau(req.params.idDate, bordereauData => {
     res.send(bordereauData)

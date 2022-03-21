@@ -120,6 +120,18 @@ class User
     })
   }
 
+  // RECUPERATION DE LA LISTE DES ADHERENTS
+  selectAllAdherentBordereau(retour)
+  {
+    // Requête de récupération des données des utilisateurs
+    connexion.query('SELECT id_demandeur, nom, prenom, id_utilisateur FROM demandeur WHERE estAdherent = 1', (erreur, resultat) => {
+      // Traitement de l'erreur
+      if (erreur) throw erreur
+      // Fin de traitement
+      retour(resultat)
+    })
+  }
+
   /* -------------------------------------------------------------------------------------------------------- */
 
 
@@ -160,7 +172,7 @@ class User
   selectFicheFrais(id_ligne_frais, id_adherent, traitement)
   {
     // Requête de récupération des données utilisateurs
-    connexion.query('SELECT * FROM ligne_frais WHERE id_ligne_frais = ? AND WHERE id_adherent = ?', [id_ligne_frais, id_adherent], (erreur, res) => {
+    connexion.query('SELECT * FROM ligne_frais WHERE id_ligne_frais = ? AND id_adherent = ?', [id_ligne_frais, id_adherent], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Finalisation de l'inscription
@@ -182,24 +194,24 @@ class User
   }
 
   // MISE A JOUR D'UNE FICHE DE FRAIS
-  updateFicheFrais(id_ligne_frais, date_ligne_frais, trajet, km, km_valide, cout_peage, peage_valide, peage_justificatif, cout_repas, repas_valide, cout_hebergement, hebergement_valide, hebergement_justificatif, id_motif, id_adherent, traitement)
+  updateFicheFrais(id_ligne_frais, date_ligne_frais, trajet, km, km_valide, cout_peage, peage_valide, peage_justificatif, cout_repas, repas_valide, cout_hebergement, hebergement_valide, hebergement_justificatif, id_motif, traitement)
   {
-    // Requête de mise à jour de la fiche de frais
-    connexion.query('UPDATE ligne_frais SET date_ligne_frais = ?, trajet = ?, km = ?, km_valide = ?, cout_peage = ?, peage_valide = ?, peage_justificatif = ?, cout_repas = ?, repas_valide = ?, cout_hebergement = ?, hebergement_valide = ?, hebergement_justificatif = ?, id_motif = ? WHERE id_ligne_frais = ? AND WHERE id_adherent = ?', [date_ligne_frais, trajet, km, km_valide, cout_peage, peage_valide, peage_justificatif, cout_repas, repas_valide, cout_hebergement, hebergement_valide, hebergement_justificatif, id_motif, id_ligne_frais, id_adherent], (erreur, res) => {
+    // // Requête de mise à jour de la fiche de frais
+    connexion.query('UPDATE ligne_frais SET date_ligne_frais = ?, trajet = ?, km = ?, km_valide = ?, cout_peage = ?, peage_valide = ?, peage_justificatif = ?, cout_repas = ?, repas_valide = ?, cout_hebergement = ?, hebergement_valide = ?, hebergement_justificatif = ?, id_motif = ? WHERE id_ligne_frais = ?', [date_ligne_frais, trajet, km, km_valide, cout_peage, peage_valide, peage_justificatif, cout_repas, repas_valide, cout_hebergement, hebergement_valide, hebergement_justificatif, id_motif, id_ligne_frais], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Notification de mise à jour de la fiche de frais
-      console.log('Mise à jour de la fiche de frais : ' + id)
+      console.log('Mise à jour de la fiche de frais : ' + id_ligne_frais)
       // Finalisation de la mise à jour
       traitement('update')
     })
   }
 
   // SUPRESSION D'UNE FICHE DE FRAIS
-  deleteFicheFrais(id_adherent, id_fiche_frais, traitement)
+  deleteFicheFrais(id_fiche_frais, traitement)
   {
     // Requête de supression de la fiche de frais
-    connexion.query('DELETE FROM ligne_frais WHERE id_ligne_frais = ? AND id_adherent = ?', [id_fiche_frais, id_adherent], (erreur, res) => {
+    connexion.query('DELETE FROM ligne_frais WHERE id_ligne_frais = ?', [id_fiche_frais], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Finalisation de la supression
@@ -263,7 +275,7 @@ class User
   selectBordereauData(id_bordereau, id_adherent, traitement)
   {
     // Requête de récupération des données du bordereau
-    connexion.query('SELECT * FROM bordereau WHERE id_bordereau = ? AND WHERE id_adherent = ?', [id_bordereau, id_adherent], (erreur, res) => {
+    connexion.query('SELECT * FROM bordereau WHERE id_bordereau = ? AND id_adherent = ?', [id_bordereau, id_adherent], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Vérification de la présence
@@ -302,7 +314,7 @@ class User
   deleteBordereau(id_adherent, id_bordereau, traitement)
   {
     // Requête de supression d'un bordereau'
-    connexion.query('DELETE FROM bordereau WHERE id_bordereau = ? AND WHERE id_adherent = ?', [id_bordereau, id_adherent], (erreur, res) => {
+    connexion.query('DELETE FROM bordereau WHERE id_bordereau = ? AND id_adherent = ?', [id_bordereau, id_adherent], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Finalisation de la supression

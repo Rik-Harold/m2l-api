@@ -5,37 +5,6 @@ const User = require('./user.js');
 // Class Utilisateur
 class Admin extends User
 {
-  // Déclaration des attributs locales
-  
-  // Constructeur des informations
-  /*constructor(dataUser)
-  {
-    // INITIALISATION DES DONNEES D'INSCRIPTION
-    if (dataUser.statutConnexion === 'inscription')
-    {
-      // Création de l'utilisateur inscrit
-      let resultat = this.addUser(dataUser.id, dataUser.email, dataUser.statut, dataUser.droit_reservation, dataUser.niveau_tarif)
-      // Initialisation locale des données de l'utilisateur courant
-      if (resultat === 'inscrit')
-      {
-        this.id = dataUser.id
-        this.email = dataUser.email
-        this.statut = dataUser.statut
-        this.droit_reservation = dataUser.droit_reservation
-        this.niveau_tarif = dataUser.niveau_tarif
-      }
-    // INITIALISATION DES DONNEES DE CONNEXION
-    }else
-    {
-      // Initialisation locale des données de l'utilisateur courant
-      this.id = dataUser.id
-      this.email = dataUser.email
-      this.statut = dataUser.statut
-      this.droit_reservation = dataUser.droit_reservation
-      this.niveau_tarif = dataUser.niveau_tarif
-    }
-  }*/
-
   // RECUPERATION DE LA LISTE DES UTILISATEURS
   selectAllUser(retour)
   {
@@ -76,15 +45,50 @@ class Admin extends User
   // CREATION D'UN NOUVEL UTILISATEUR
   updateUser(id, email, statut, droit_reservation, niveau_tarif, traitement)
   {
-    // Requête de récupération des données utilisateurs
-    connexion.query('UPDATE utilisateur SET email = ?, statut = ?, droitReservation = ?, niveauTarif = ? WHERE id_utilisateur = ?', [email, statut, droit_reservation, niveau_tarif, id], (erreur, res) => {
-      // Traitement de l'erreur
-      if (erreur) throw erreur
-      // Notification de création du nouvel utilisateur
-      console.log('Mise à jour à l\'id : ' + id)
-      // Finalisation de l'inscription
-      traitement('update')
-    })
+    if (statut == 'adherent')
+    {
+      // Requête de récupération des données utilisateurs
+      connexion.query('UPDATE utilisateur SET email = ?, statut = ?, droitReservation = ?, niveauTarif = ? WHERE id_utilisateur = ?', [email, statut, droit_reservation, niveau_tarif, id], (erreur, res1) => {
+        // Traitement de l'erreur
+        if (erreur) throw erreur
+        // Requête de récupération des données utilisateurs
+        connexion.query('UPDATE demandeur SET estAdherent = 1 WHERE id_utilisateur = ?', [id], (erreur, res2) => {
+          // Traitement de l'erreur
+          if (erreur) throw erreur
+          // Notification de mise à jour
+          console.log('Mise à jour à l\'id : ' + id)
+          // Finalisation de l'inscription
+          traitement('update')
+        })
+      })
+    } else if (statut == 'demandeur')
+    {
+      // Requête de récupération des données utilisateurs
+      connexion.query('UPDATE utilisateur SET email = ?, statut = ?, droitReservation = ?, niveauTarif = ? WHERE id_utilisateur = ?', [email, statut, droit_reservation, niveau_tarif, id], (erreur, res1) => {
+        // Traitement de l'erreur
+        if (erreur) throw erreur
+        // Requête de récupération des données utilisateurs
+        connexion.query('UPDATE demandeur SET estAdherent = 0 WHERE id_utilisateur = ?', [id], (erreur, res2) => {
+          // Traitement de l'erreur
+          if (erreur) throw erreur
+          // Notification de mise à jour
+          console.log('Mise à jour à l\'id : ' + id)
+          // Finalisation de l'inscription
+          traitement('update')
+        })
+      })
+    } else
+    {
+      // Requête de récupération des données utilisateurs
+      connexion.query('UPDATE utilisateur SET email = ?, statut = ?, droitReservation = ?, niveauTarif = ? WHERE id_utilisateur = ?', [email, statut, droit_reservation, niveau_tarif, id], (erreur, res) => {
+        // Traitement de l'erreur
+        if (erreur) throw erreur
+        // Notification de création du nouvel utilisateur
+        console.log('Mise à jour à l\'id : ' + id)
+        // Finalisation de l'inscription
+        traitement('update')
+      })
+    }
   }
 
   // SUPRESSION D'UN UTILISATEUR
