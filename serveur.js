@@ -116,7 +116,6 @@ app.post('/api/verif/users', (req, res) => {
 
 // SELECTION DES LIGUES
 app.get('/api/select/ligues', (req, res) => {
-  console.log('Sélection des ligues')
   // Traitement des informations
   traitement.selectLigues(resultat => {
     // Réponse du serveur
@@ -379,12 +378,12 @@ app.get('/api/select/all-bordereau/:idDate', (req, res)=>{
 })
 
 // DONNEES D'UN BORDEREAU SELECTIONNEE
-app.get('/api/select/bordereau/:idAdherent/:id', (req, res)=>{
+app.get('/api/select/bordereau-adherent/:idAdherent/:annee', (req, res)=>{
   // Récupération des informations
   const id_adherent = parseInt(req.params.idAdherent)
-  const id_bordereau = parseInt(req.params.id)
+  const annee = parseInt(req.params.annee)
   // Traitement de la requête
-  currentUser.selectBordereauData(id_bordereau, id_adherent, bordereauData => {
+  currentUser.selectBordereauData(id_adherent, annee, bordereauData => {
     res.send(bordereauData)
   })
 })
@@ -393,7 +392,7 @@ app.get('/api/select/bordereau/:idAdherent/:id', (req, res)=>{
 app.post('/api/create/bordereau', (req, res) => {
   console.log('Requête de création d\'un bordereau')
   // Enregistrement des données du nouveau bordereau
-  currentUser.addBordereau(req.body.srcBordereau, req.body.idAdherent, (statut, id) => {
+  currentUser.addBordereau(req.body.srcBordereau, req.body.idAdherent, req.body.valide, req.body.annee, (statut, id) => {
     // Vérification et retour du résultat
     if (statut == 'creation')
     {
@@ -412,7 +411,7 @@ app.post('/api/create/bordereau', (req, res) => {
 app.post('/api/update/bordereau', (req, res) => {
   console.log('Requête de mise à jour d\'une fiche de frais')
   // Mise à jour
-  currentUser.updateBordereau(req.body.id, req.body.srcBordereau, req.body.idAdherent, (statut) => {
+  currentUser.updateBordereau(req.body.id, req.body.srcBordereau, req.body.valide, req.body.frais, (statut) => {
     // Vérification et retour du résultat
     if (statut == 'update')
     {
@@ -426,35 +425,34 @@ app.post('/api/update/bordereau', (req, res) => {
   })
 })
 
-// SUPRESSION D'UNE FICHE DE FRAIS
-app.get('/api/delete/bordereau/:idAdherent/:id', (req, res)=>{
+// SUPRESSION D'UN BORDEREAU
+app.get('/api/delete/bordereau/:id', (req, res)=>{
   // Récupération des informations
-  const id_adherent = parseInt(req.params.idAdherent)
-  const id_fiche_frais = parseInt(req.params.id)
+  const id_bordereau = parseInt(req.params.id)
   // Traitement de la requête
-  currentUser.deleteBordereau(id_adherent, id_fiche_frais, userData => {
+  currentUser.deleteBordereau(id_bordereau, userData => {
     res.send(userData)
   })
 })
 
-// CREATION DU BORDEREAU
-// SUPRESSION D'UNE FICHE DE FRAIS
-app.post('/api/get/bordereau', (req, res)=>{
+// AJOUT DU DOCUMENT CERFA AU BORDEREAU
+app.get('/api/get/cerfa/:id/:cerfa', (req, res) => {
   // Récupération des informations
-  console.log(req)
-  // console.log(req.read())
-  // const pdf = req.read()
-  // fs.writeFileSync('./bordereau.pdf', pdf)
-  console.log('Sauvegarde')
-  // Traitement de la requête
-  // currentUser.deleteBordereau(id_adherent, id_fiche_frais, userData => {
-  //   res.send(userData)
-  // })
-  res.send({ok: "bien"})
+  const idBordereau = parseInt(req.params.id)
+  // Mise à jour
+  currentUser.addDocCerfa(idBordereau, req.params.cerfa, (statut) => {
+    // Vérification et retour du résultat
+    if (statut == 'update')
+    {
+      res.send({
+        message: 'update'
+      })
+    } else
+    {
+      res.send({message: 'erreur'})
+    }
+  })
 })
-
-// RECUPERATION DES INFORMATIONS ADHERENTS - BORDEREAUX
-
 
 // Lancement du serveur
 app.listen(port, () => {

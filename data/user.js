@@ -229,16 +229,16 @@ class User
   */
 
   // AJOUT D'UN BORDEREAU
-  addBordereau(src_bordereau, id_adherent, traitement)
+  addBordereau(src_bordereau, id_adherent, valide, annee, traitement)
   {
     // Requête de création d'un bordereau
-    connexion.query('INSERT INTO bordereau (src_bordereau, adherent_id) VALUES (?, ?)', [src_bordereau, id_adherent], (erreur, res) => {
+    connexion.query('INSERT INTO bordereau (src_bordereau, adherent_id, valide, annee) VALUES (?, ?, ?, ?)', [src_bordereau, id_adherent, valide, annee], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Notification de création du nouveau bordereau
-      console.log('Nouvel bordereau créé à l\'id : ' + res.insertId)
+      console.log('Nouveau bordereau créé à l\'id : ' + res.insertId)
       // Finalisation de l'inscription
-      traitement('creation')
+      traitement('creation', res.insertId)
     })
     /* connexion.query('INSERT INTO bordereau (src_bordereau, adherent_id) VALUES (?, ?)', [src_bordereau, id_adherent], (erreur, res1) => {
       // Traitement de l'erreur
@@ -263,7 +263,7 @@ class User
     // Récupération de l'identififiant de date trié
     const tri_bordereau = '\'bordereau_' + date_bordereau + '%\''
     // Requête de récupération des données des utilisateurs
-    connexion.query('SELECT nom, prenom, id_demandeur, src_bordereau FROM utilisateur, demandeur, bordereau WHERE src_bordereau LIKE ' + tri_bordereau + ' AND demandeur.id_utilisateur = utilisateur.id_utilisateur AND demandeur.id_demandeur = adherent_id', (erreur, resultat) => {
+    connexion.query('SELECT nom, prenom, id_demandeur, id_bordereau, src_bordereau, valide FROM utilisateur, demandeur, bordereau WHERE src_bordereau LIKE ' + tri_bordereau + ' AND demandeur.id_utilisateur = utilisateur.id_utilisateur AND demandeur.id_demandeur = adherent_id', (erreur, resultat) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Fin de traitement
@@ -272,10 +272,10 @@ class User
   }
 
   // RECUPARATION DES DONNEES D'UN BORDEREAU EN PARTICULIER
-  selectBordereauData(id_bordereau, id_adherent, traitement)
+  selectBordereauData(id_adherent, annee, traitement)
   {
     // Requête de récupération des données du bordereau
-    connexion.query('SELECT * FROM bordereau WHERE id_bordereau = ? AND id_adherent = ?', [id_bordereau, id_adherent], (erreur, res) => {
+    connexion.query('SELECT * FROM bordereau WHERE adherent_id = ? AND annee = ?', [id_adherent, annee], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Vérification de la présence
@@ -297,10 +297,10 @@ class User
   }
 
   // MISE A JOUR D'UN BORDEREAU
-  updateBordereau(id, src_bordereau, id_adherent, traitement)
+  updateBordereau(id, src_bordereau, valide, frais, traitement)
   {
     // Requête de récupération des données utilisateurs
-    connexion.query('UPDATE bordereau SET src_bordereau = ?, adherent_id = ? WHERE id_bordereau = ?', [src_bordereau, id_adherent, id], (erreur, res) => {
+    connexion.query('UPDATE bordereau SET src_bordereau = ?, valide = ?, frais = ? WHERE id_bordereau = ?', [src_bordereau, valide, frais, id], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Notification de mise à jour du bordereau
@@ -310,17 +310,31 @@ class User
     })
   }
 
+  // MISE A JOUR D'UN BORDEREAU
+  addDocCerfa(id, cerfa, traitement)
+  {
+    // Requête de récupération des données utilisateurs
+    connexion.query('UPDATE bordereau SET cerfa = ? WHERE id_bordereau = ?', [cerfa, id], (erreur, res) => {
+      // Traitement de l'erreur
+      if (erreur) throw erreur
+      // Notification de mise à jour du bordereau
+      console.log('Ajout du document cerfa au bordereau à l\'id : ' + id)
+      // Finalisation de la mise à jour
+      traitement('update')
+    })
+  }
+
   // SUPRESSION D'UN UTILISATEUR
-  deleteBordereau(id_adherent, id_bordereau, traitement)
+  deleteBordereau(id_bordereau, traitement)
   {
     // Requête de supression d'un bordereau'
-    connexion.query('DELETE FROM bordereau WHERE id_bordereau = ? AND id_adherent = ?', [id_bordereau, id_adherent], (erreur, res) => {
+    connexion.query('DELETE FROM bordereau WHERE id_bordereau = ?', [id_bordereau], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Finalisation de la supression
       traitement({
         statut: 'supression',
-        user: id
+        user: id_bordereau
       })
     })
   }
