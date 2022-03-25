@@ -45,6 +45,7 @@ class Admin extends User
   // CREATION D'UN NOUVEL UTILISATEUR
   updateUser(id, email, statut, droit_reservation, niveau_tarif, traitement)
   {
+    // Mise à jour du compte adhérent
     if (statut == 'adherent')
     {
       // Requête de récupération des données utilisateurs
@@ -61,6 +62,8 @@ class Admin extends User
           traitement('update')
         })
       })
+
+    // Mise à jour du compte adhérent
     } else if (statut == 'demandeur')
     {
       // Requête de récupération des données utilisateurs
@@ -77,6 +80,8 @@ class Admin extends User
           traitement('update')
         })
       })
+
+    // Mise à jour du compte
     } else
     {
       // Requête de récupération des données utilisateurs

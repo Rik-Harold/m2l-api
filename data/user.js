@@ -240,21 +240,6 @@ class User
       // Finalisation de l'inscription
       traitement('creation', res.insertId)
     })
-    /* connexion.query('INSERT INTO bordereau (src_bordereau, adherent_id) VALUES (?, ?)', [src_bordereau, id_adherent], (erreur, res1) => {
-      // Traitement de l'erreur
-      if (erreur) throw erreur
-      // Notification de création du nouveau bordereau
-      console.log('Nouvel bordereau créé à l\'id : ' + res1.insertId)
-      // Ajout à la table des bordereau utilisateurs
-      connexion.query('INSERT INTO bordereau_table (adherent_id, bordereau_id) VALUES (?, ?)', [id_adherent, res1.insertId], (erreur, res2) => {
-        // Traitement de l'erreur
-        if (erreur) throw erreur
-        // Notification d'ajout à la table des bordereaux
-        console.log('Bordereau ajouté à l\'id : ' + res2.insertId)
-        // Finalisation de l'inscription
-        traitement('creation')
-      })
-    }) */
   }
 
   // RECUPERATION DE LA LISTE DES BORDEREAU

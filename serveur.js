@@ -412,7 +412,7 @@ app.post('/api/update/bordereau', (req, res) => {
   console.log('Requête de mise à jour d\'une fiche de frais')
   // Mise à jour
   currentUser.updateBordereau(req.body.id, req.body.srcBordereau, req.body.valide, req.body.frais, (statut) => {
-    // Vérification et retour du résultat
+    // Vérification et notification
     if (statut == 'update')
     {
       res.send({
