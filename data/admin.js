@@ -17,7 +17,7 @@ class Admin extends User
     })
   }
 
-  // RECUPARATION DE DONNEES UTILISATEUR
+  // RECUPARATION DES DONNEES D'UN UTILISATEUR EN PARTICULIER
   selectDataUser(id, traitement)
   {
     // Requête de récupération des données utilisateurs

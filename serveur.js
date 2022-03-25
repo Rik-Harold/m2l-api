@@ -435,7 +435,7 @@ app.get('/api/delete/bordereau/:id', (req, res)=>{
   })
 })
 
-// AJOUT DU DOCUMENT CERFA AU BORDEREAU
+// AJOUT DE LA SOURCE DU DOCUMENT CERFA AU BORDEREAU
 app.get('/api/get/cerfa/:id/:cerfa', (req, res) => {
   // Récupération des informations
   const idBordereau = parseInt(req.params.id)

@@ -295,7 +295,7 @@ class User
     })
   }
 
-  // MISE A JOUR D'UN BORDEREAU
+  // MISE A JOUR DU DOCUMENT CERFA DU BORDEREAU
   addDocCerfa(id, cerfa, traitement)
   {
     // Requête de récupération des données utilisateurs
