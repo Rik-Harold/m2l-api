@@ -354,7 +354,6 @@ app.post('/api/update/fiche-de-frais', (req, res) => {
 
 // SUPRESSION D'UNE FICHE DE FRAIS
 app.get('/api/delete/fiche-de-frais/:id', (req, res)=>{
-  console.log('Requête de suppression de données')
   // Récupération des informations
   const id_fiche_frais = parseInt(req.params.id)
   // Traitement de la requête

@@ -42,7 +42,7 @@ class Admin extends User
     })
   }
 
-  // CREATION D'UN NOUVEL UTILISATEUR
+  // MISE A JOUR D'UN NOUVEL UTILISATEUR
   updateUser(id, email, statut, droit_reservation, niveau_tarif, traitement)
   {
     // Mise à jour du compte adhérent

@@ -327,7 +327,7 @@ class User
   /* -------------------------------------------------------------------------------------------------------- */
 
 
-  // Constructeur des informations
+  // Constructeur de la class
   constructor(dataUser)
   {
     // INITIALISATION DES DONNEES D'INSCRIPTION
