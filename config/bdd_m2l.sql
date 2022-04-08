@@ -33,7 +33,7 @@ CREATE TABLE `bordereau` (
   PRIMARY KEY (`id_bordereau`),
   KEY `cle_bordereau_adherent_idx` (`adherent_id`),
   CONSTRAINT `cle_bordereau_adherent` FOREIGN KEY (`adherent_id`) REFERENCES `demandeur` (`id_demandeur`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `demandeur` (
   KEY `cle_adherent_ligue_idx` (`ligue_id`),
   CONSTRAINT `cle_adherent_ligue` FOREIGN KEY (`ligue_id`) REFERENCES `ligues` (`id_ligues`),
   CONSTRAINT `demandeur_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,7 @@ CREATE TABLE `domaine` (
   `id_domaine` int NOT NULL,
   `libelle` varchar(50) NOT NULL,
   PRIMARY KEY (`id_domaine`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,7 +135,7 @@ CREATE TABLE `ligne_frais` (
   KEY `cle_adherent_ligne_frais_idx` (`id_adherent`),
   CONSTRAINT `cle_adherent_ligne_frais` FOREIGN KEY (`id_adherent`) REFERENCES `demandeur` (`id_demandeur`),
   CONSTRAINT `ligne_frais_ibfk_1` FOREIGN KEY (`id_motif`) REFERENCES `motif` (`id_motif`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +164,7 @@ CREATE TABLE `ligues` (
   `reservation_amphi` tinyint(1) NOT NULL,
   `reservation_convivialite` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_ligues`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `motif` (
   `id_motif` int NOT NULL,
   `libelle` varchar(50) NOT NULL,
   PRIMARY KEY (`id_motif`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +226,7 @@ CREATE TABLE `reservation` (
   CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`),
   CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`id_tarif_reservation`) REFERENCES `tarif_reservation` (`id_tarif_reservation`),
   CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`id_salle`) REFERENCES `salle` (`id_salle`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +253,7 @@ CREATE TABLE `salle` (
   PRIMARY KEY (`id_salle`),
   KEY `id_domaine` (`id_domaine`),
   CONSTRAINT `salle_ibfk_1` FOREIGN KEY (`id_domaine`) REFERENCES `domaine` (`id_domaine`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +276,7 @@ CREATE TABLE `tarif_reservation` (
   `id_tarif_reservation` int NOT NULL AUTO_INCREMENT,
   `tarif` double NOT NULL,
   PRIMARY KEY (`id_tarif_reservation`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,7 +303,7 @@ CREATE TABLE `utilisateur` (
   `droitReservation` tinyint NOT NULL,
   `niveauTarif` int NOT NULL,
   PRIMARY KEY (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
