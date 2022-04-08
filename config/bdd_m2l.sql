@@ -33,7 +33,7 @@ CREATE TABLE `bordereau` (
   PRIMARY KEY (`id_bordereau`),
   KEY `cle_bordereau_adherent_idx` (`adherent_id`),
   CONSTRAINT `cle_bordereau_adherent` FOREIGN KEY (`adherent_id`) REFERENCES `demandeur` (`id_demandeur`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `bordereau` (
 
 LOCK TABLES `bordereau` WRITE;
 /*!40000 ALTER TABLE `bordereau` DISABLE KEYS */;
-INSERT INTO `bordereau` VALUES (3,'bordereau_2022_1.pdf',1,0,0,2022,'document_cerfa_2022_1.pdf');
+INSERT INTO `bordereau` VALUES (3,'bordereau_2022_1.pdf',1,0,46,2022,'document_cerfa_2022_1.pdf'),(4,'bordereau_2022_5.pdf',5,1,34,2022,'document_cerfa_2022_5.pdf');
 /*!40000 ALTER TABLE `bordereau` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,7 +70,7 @@ CREATE TABLE `demandeur` (
   KEY `cle_adherent_ligue_idx` (`ligue_id`),
   CONSTRAINT `cle_adherent_ligue` FOREIGN KEY (`ligue_id`) REFERENCES `ligues` (`id_ligues`),
   CONSTRAINT `demandeur_ibfk_1` FOREIGN KEY (`id_utilisateur`) REFERENCES `utilisateur` (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -79,7 +79,7 @@ CREATE TABLE `demandeur` (
 
 LOCK TABLES `demandeur` WRITE;
 /*!40000 ALTER TABLE `demandeur` DISABLE KEYS */;
-INSERT INTO `demandeur` VALUES (1,'JEAN','Pierre','Rue du chat',91049,'EVRY',123456789,NULL,15,1,1),(2,'YO','Marc','Rue du chien',911167,'Chateau',123456786,NULL,16,1,1),(4,'DERNIER','Mystere','10 Rue du mystère',47710,'Mystério',123456787,'2022-02-04',21,1,0);
+INSERT INTO `demandeur` VALUES (1,'JEAN','Pierre','Rue du chat',91049,'EVRY',123456789,NULL,15,1,1),(2,'YO','Marc','Rue du chien',911167,'Chateau',123456786,NULL,16,1,1),(4,'DERNIER','Mystere','10 Rue du mystère',47710,'Mystério',123456787,'2022-02-04',21,1,0),(5,'John','ho','129 Allée des Champs Elysées',911228,'Evry - Courcouronnes',123456789,'2022-03-03',23,1,1),(7,'Nouvel','Adherent','10 Rue du mystère',91049,'EVRY',123456789,'2022-03-30',25,2,1),(8,'John','Yo','10 Rue du mystère',91049,'EVRY',123456789,'2022-04-01',26,1,0),(9,'dodd','autre','129 Allée des Champs Elysées',91170,'Viry Châtillon - (91170)',123456789,'2022-04-02',27,2,0);
 /*!40000 ALTER TABLE `demandeur` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -135,7 +135,7 @@ CREATE TABLE `ligne_frais` (
   KEY `cle_adherent_ligne_frais_idx` (`id_adherent`),
   CONSTRAINT `cle_adherent_ligne_frais` FOREIGN KEY (`id_adherent`) REFERENCES `demandeur` (`id_demandeur`),
   CONSTRAINT `ligne_frais_ibfk_1` FOREIGN KEY (`id_motif`) REFERENCES `motif` (`id_motif`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,7 +144,7 @@ CREATE TABLE `ligne_frais` (
 
 LOCK TABLES `ligne_frais` WRITE;
 /*!40000 ALTER TABLE `ligne_frais` DISABLE KEYS */;
-INSERT INTO `ligne_frais` VALUES (19,'2022-03-21','Paris - Lyon',34,2,12,3,NULL,0,0,NULL,0,0,NULL,2,2),(21,'2022-03-01','Evry - Créteil',27,2,0,0,'',7,2,NULL,0,0,'',5,1),(22,'2021-12-30','Ivry-Sur-Seine - Grigny',32,1,0,0,'',9,1,NULL,0,0,'',2,1);
+INSERT INTO `ligne_frais` VALUES (19,'2022-03-21','Paris - Lyon',34,2,12,3,NULL,0,0,NULL,0,0,NULL,2,2),(21,'2022-03-01','Evry - Créteil',27,2,0,0,'',7,2,NULL,0,0,'',5,1),(22,'2021-12-30','Ivry-Sur-Seine - Grigny',32,1,0,0,'',9,1,NULL,0,0,'',2,1),(25,'2022-03-01','Nice - Draveil',100,1,0,0,'',3,2,NULL,0,0,'',3,5);
 /*!40000 ALTER TABLE `ligne_frais` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,7 +303,7 @@ CREATE TABLE `utilisateur` (
   `droitReservation` tinyint NOT NULL,
   `niveauTarif` int NOT NULL,
   PRIMARY KEY (`id_utilisateur`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,7 +312,7 @@ CREATE TABLE `utilisateur` (
 
 LOCK TABLES `utilisateur` WRITE;
 /*!40000 ALTER TABLE `utilisateur` DISABLE KEYS */;
-INSERT INTO `utilisateur` VALUES (1,'moi@gmail.com','moi','admin',1,0),(2,'jean@gmail.com','jean','tresorier',0,1),(3,'luc@gmail.com','luc','tresorier',1,1),(15,'pierre@gmail.com','pierre','adherent',1,1),(16,'marc@gmail.com','marc','adherent',1,3),(17,'monsieur@gmail.com','monsieur','admin',1,4),(21,'mystere@gmail.com','mystere','demandeur',1,4),(22,'salut@gmail.com','salut','tresorier',1,3);
+INSERT INTO `utilisateur` VALUES (1,'moi@gmail.com','moi','admin',1,0),(2,'jean@gmail.com','jean','tresorier',0,1),(3,'luc@gmail.com','luc','tresorier',1,1),(15,'pierre@gmail.com','pierre','adherent',1,1),(16,'marc@gmail.com','marc','adherent',1,3),(17,'monsieur@gmail.com','monsieur','admin',1,4),(21,'mystere@gmail.com','mystere','demandeur',1,4),(22,'salut@gmail.com','salut','tresorier',1,3),(23,'ho@yahoo.fr','ho','adherent',0,3),(25,'adherent@gmail.com','adhrent','adherent',0,3),(26,'yo@gmail.com','yo','demandeur',0,3),(27,'jharold613@gmail.com','autre','demandeur',0,3);
 /*!40000 ALTER TABLE `utilisateur` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -325,4 +325,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-30 12:05:57
+-- Dump completed on 2022-04-08 14:29:21

@@ -299,7 +299,7 @@ class User
   addDocCerfa(id, cerfa, traitement)
   {
     // Requête de récupération des données utilisateurs
-    connexion.query('UPDATE bordereau SET cerfa = ? WHERE id_bordereau = ?', [cerfa, id], (erreur, res) => {
+    connexion.query('UPDATE bordereau SET cerfa = ?, valide = 1, WHERE id_bordereau = ?', [cerfa, id], (erreur, res) => {
       // Traitement de l'erreur
       if (erreur) throw erreur
       // Notification de mise à jour du bordereau
